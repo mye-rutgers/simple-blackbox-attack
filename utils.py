@@ -89,7 +89,7 @@ def get_preds(model, inputs, dataset_name, correct_class=None, batch_size=25, re
     for i in range(num_batches):
         upper = min((i + 1) * batch_size, inputs.size(0))
         input = apply_normalization(inputs[(i * batch_size):upper], dataset_name)
-        input_var = torch.autograd.Variable(input.cuda(), volatile=True)
+        input_var = torch.autograd.Variable(input, volatile=True)
         output = softmax.forward(model.forward(input_var))
         if correct_class is None:
             prob, pred = output.max(1)
@@ -119,7 +119,7 @@ def get_least_likely(model, inputs, dataset_name, batch_size=25, return_cpu=True
     for i in range(num_batches):
         upper = min((i + 1) * batch_size, inputs.size(0))
         input = apply_normalization(inputs[(i * batch_size):upper], dataset_name)
-        input_var = torch.autograd.Variable(input.cuda(), volatile=True)
+        input_var = torch.autograd.Variable(input, volatile=True)
         output = softmax.forward(model.forward(input_var))
         prob, pred = output.min(1)
         if return_cpu:
