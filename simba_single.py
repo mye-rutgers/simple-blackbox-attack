@@ -5,7 +5,7 @@ def normalize(x):
     return utils.apply_normalization(x, 'imagenet')
 
 def get_probs(model, x, y):
-    output = model(normalize(x.cuda())).cpu()
+    output = model(normalize(x)).cpu()
     probs = torch.nn.Softmax()(output)[:, y]
     return torch.diag(probs.data)
 
