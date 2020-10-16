@@ -41,12 +41,12 @@ def normalize(x):
     return utils.apply_normalization(x, 'imagenet')
 
 def get_probs(model, x, y):
-    output = model(normalize(torch.autograd.Variable(x.cuda()))).cpu()
+    output = model(normalize(torch.autograd.Variable(x))).cpu()
     probs = torch.index_select(torch.nn.Softmax()(output).data, 1, y)
     return torch.diag(probs)
 
 def get_preds(model, x):
-    output = model(normalize(torch.autograd.Variable(x.cuda()))).cpu()
+    output = model(normalize(torch.autograd.Variable(x))).cpu()
     _, preds = output.data.max(1)
     return preds
 
@@ -163,7 +163,7 @@ if not os.path.exists(args.sampled_image_dir):
     os.mkdir(args.sampled_image_dir)
 
 # load model and dataset
-model = getattr(models, args.model)(pretrained=True).cuda()
+model = getattr(models, args.model)(pretrained=True)
 model.eval()
 if args.model.startswith('inception'):
     image_size = 299
